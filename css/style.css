@@ -56,18 +56,85 @@ p {
 }
 
 nav {
-  width: 30%;
+  width: 70%;
 }
 
 nav ul {
   display: flex; /*it will put the nav ul in row */
-  justify-content: space-around; /* it will put space on the sides and in the middle of the flex items */
+  justify-content: center; /* it will put space on the sides and in the middle of the flex items */
   align-items: center;
+  gap: 18px;
 }
 
 nav ul li {
   color: var(--text-color);
   cursor: pointer;
+}
+
+.sand-text {
+  position: relative;
+  color: rgba(0, 170, 0, 0.08);
+  cursor: default;
+  overflow: hidden;
+  text-shadow:
+    0 0 2px rgba(0, 170, 0, 0.4),
+    0 0 14px rgba(0, 170, 0, 0.18);
+  transition: color 220ms ease, text-shadow 220ms ease;
+}
+
+.sand-text::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: rgba(0, 255, 0, 0.38);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 255, 0, 0.95) 0 1px,
+      transparent 1px 8px
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: blur(1px);
+  transform: translateY(-14px);
+  animation: matrixScramble 1.2s linear infinite;
+  pointer-events: none;
+}
+
+.sand-text::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 0, 0.18),
+    transparent
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.sand-text:hover,
+.sand-text:focus {
+  color: #e8ffe8;
+  text-shadow:
+    0 0 4px rgba(0, 255, 0, 0.75),
+    0 0 18px rgba(0, 255, 0, 0.42),
+    0 0 32px rgba(0, 170, 0, 0.26);
+}
+
+.sand-text:hover::before,
+.sand-text:focus::before {
+  opacity: 0;
+  animation-play-state: paused;
+}
+
+.sand-text:hover::after,
+.sand-text:focus::after {
+  opacity: 1;
+  animation: scanReveal 700ms ease-out;
 }
 
 .container {
@@ -102,5 +169,32 @@ nav ul li {
 
   50% {
     color: var(--text-color);
+  }
+}
+
+@keyframes matrixScramble {
+  0% {
+    transform: translateY(-18px);
+    opacity: 0.28;
+  }
+
+  50% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+
+  100% {
+    transform: translateY(18px);
+    opacity: 0.28;
+  }
+}
+
+@keyframes scanReveal {
+  from {
+    transform: translateX(-120%);
+  }
+
+  to {
+    transform: translateX(120%);
   }
 }
